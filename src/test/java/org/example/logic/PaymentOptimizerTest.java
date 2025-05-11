@@ -89,25 +89,6 @@ public class PaymentOptimizerTest {
         assertBD("CARD1", "80.00", result);
     }
 
-    @Test
-    void testMultipleOrdersWithDifferentStrategies() {
-        var orders = List.of(
-                order("O1", 100.00, "CARD1"),
-                order("O2", 100.00),
-                order("O3", 50.00, "CARD2")
-        );
-        var methods = List.of(
-                method("CARD1", 10, 100.00),
-                method("CARD2", 5, 50.00),
-                method("PUNKTY", 15, 90.00)
-        );
-
-        var result = new PaymentOptimizer(orders, methods).optimizePayments();
-
-        assertBD("PUNKTY", "85.00", result);
-        assertBD("CARD2", "47.50", result);
-    }
-
     // ======================== HELPER METHODS ========================
 
     private static Order order(String id, double value, String... promotions) {

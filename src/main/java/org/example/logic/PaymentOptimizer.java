@@ -72,9 +72,7 @@ public class PaymentOptimizer {
             }
         }
 
-        return bestMethod != null
-                ? new PaymentCandidate(bestMethod, orderValue.subtract(bestDiscount))
-                : null;
+        return bestMethod != null ? new PaymentCandidate(bestMethod, orderValue.subtract(bestDiscount)) : null;
     }
 
     // ========== MIXED (PARTIAL POINTS) LOGIC ==========
@@ -83,17 +81,20 @@ public class PaymentOptimizer {
         if (!canApplyPartialPoints(order)) return;
 
         BigDecimal value = order.getValue();
-        BigDecimal discount = calcTenPercent(value);
+        BigDecimal tenPercent = calcTenPercent(value);
+        BigDecimal discount = tenPercent;
         BigDecimal toPay = value.subtract(discount);
 
         BigDecimal availablePoints = methodMap.get(PUNKTY).getLimit();
         BigDecimal pointsToUse = toPay.min(availablePoints);
-        BigDecimal remainder = toPay.subtract(pointsToUse);
 
-        String fallbackMethod = findMethodToCoverRemainder(remainder);
+        if (pointsToUse.compareTo(tenPercent) < 0) return;
+        BigDecimal remaining = toPay.subtract(pointsToUse);
+
+        String fallbackMethod = findMethodToCoverRemainder(remaining);
         if (fallbackMethod != null) {
             applyPayment(PUNKTY, pointsToUse);
-            applyPayment(fallbackMethod, remainder);
+            applyPayment(fallbackMethod, remaining);
         }
     }
 
