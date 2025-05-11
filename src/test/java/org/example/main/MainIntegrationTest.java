@@ -13,7 +13,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class MainIntegrationTest {
+class MainIntegrationTest {
 
     private static final Path OUTPUT = Path.of("result.txt");
 
