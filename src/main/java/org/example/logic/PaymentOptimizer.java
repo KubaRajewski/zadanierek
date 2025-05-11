@@ -82,8 +82,7 @@ public class PaymentOptimizer {
 
         BigDecimal value = order.getValue();
         BigDecimal tenPercent = calcTenPercent(value);
-        BigDecimal discount = tenPercent;
-        BigDecimal toPay = value.subtract(discount);
+        BigDecimal toPay = value.subtract(tenPercent);
 
         BigDecimal availablePoints = methodMap.get(PUNKTY).getLimit();
         BigDecimal pointsToUse = toPay.min(availablePoints);
